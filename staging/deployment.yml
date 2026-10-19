@@ -1,0 +1,26 @@
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: flask-app
+  namespace: staging
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: flask-app
+
+  template:
+    metadata:
+      labels:
+        app: flask-app
+
+    spec:
+      containers:
+        - name: flask-app
+          image: 442255790021.dkr.ecr.us-east-1.amazonaws.com/flask-compose-lab:8e9ceacf132004dba5d07e473c3caef1209daf95
+          ports:
+            - containerPort: 5000
