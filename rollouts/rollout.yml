@@ -1,0 +1,32 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+
+metadata:
+  name: flask-app-rollout
+  namespace: production
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: flask-app-rollout
+
+  template:
+    metadata:
+      labels:
+        app: flask-app-rollout
+    spec:
+      containers:
+        - name: flask-app
+          image: 442255790021.dkr.ecr.us-east-1.amazonaws.com/flask-compose-lab:8263aa8d17bb29f0d54ade72312e3d15d145ade3
+          ports:
+            - containerPort: 5000
+
+  strategy:
+    blueGreen:
+      activeService: flask-rollout-active
+      previewService: flask-rollout-preview
+      autoPromotionEnabled: false
+      scaleDownDelaySeconds: 60
